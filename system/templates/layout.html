@@ -29,6 +29,20 @@
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link" href="{{ url_for('home') }}">Начало</a>
+                <div class="dropdown">
+                    <a class="nav-item nav-link dropdown-toggle" href="{{ url_for('recipes') }}" id="navbarDropdown"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Категории
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{ url_for('recipes') }}">Всички</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('recipes') }}">Закуски</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('recipes') }}">Салати</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('recipes') }}">Основни</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('recipes') }}">Десерти</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('recipes') }}">Напитки</a></li>
+
+                </div>
               <a class="nav-item nav-link" href="{{ url_for('recipes') }}">Рецепти</a>
               <a class="nav-item nav-link" href="{{ url_for('about') }}">За Сайта</a>
             </div>
@@ -38,10 +52,10 @@
                     <div class="dropdown">
                         <a class="nav-item nav-link dropdown-toggle" href="#" id="navbarDropdown"
                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="../static/profile_image.png" title="Some title" alt="image" height="25" width="25">
+                            <img src="{{ '../static/profile_pics/' + current_user.image_file }}" title="Профил" alt="image" height="25" width="25">
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{{ url_for('account') }}">Профил</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('account') }}">Моят Профил</a></li>
                             <li><a class="dropdown-item" href="{{ url_for('logout') }}">Изход</a></li>
                         </ul>
                     </div>
