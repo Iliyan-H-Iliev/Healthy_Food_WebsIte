@@ -26,6 +26,11 @@ def home():  # put application's code here
     return render_template("home.html", posts=posts)
 
 
+@app.route("/recipes")
+def recipes():  # put application's code here
+    return render_template("recipes.html", title="Recipes")
+
+
 @app.route("/about")
 def about():  # put application's code here
     return render_template("about.html", title="About")
@@ -41,7 +46,7 @@ def register():
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash(f"Account has been created!", "success")
+        flash(f"Акаунтът беше успешно създаден", "success")
         return redirect(url_for("login"))
     return render_template("register.html", title="Register", form=form)
 
@@ -55,11 +60,11 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
-            flash("You have been logged in!", "success")
+            flash(f"Здрaвей {user.username}!", "success")
             next_page = request.args.get("next")
-            return redirect(next_page) if next_page else redirect(url_for("home"))
+            return redirect(next_page) if next_page else redirect(url_for("account"))
         else:
-            flash("Login Unsuccessful. Please check username and password", "danger")
+            flash("Неуспешен вход. Грешен емейл или парола", "danger")
     return render_template("login.html", title="Login", form=form)
 
 
