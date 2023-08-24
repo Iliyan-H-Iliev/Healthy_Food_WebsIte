@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
 from system.models import User
@@ -53,3 +53,11 @@ class UpdateAccountForm(FlaskForm):
 
             if user:
                 raise ValidationError("Този емейл е зает. Моля изберете друг емейл.")
+
+
+class RecipeForm(FlaskForm):
+    title = StringField("Заглавие", validators=[DataRequired()])
+    ingredients = TextAreaField("Съставки", validators=[DataRequired()])
+    preparation = TextAreaField("Начин на приготвяне", validators=[DataRequired()])
+    submit = SubmitField("Публикувай")
+

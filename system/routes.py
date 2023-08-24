@@ -3,41 +3,16 @@ import secrets
 from PIL import Image
 from system import app, db, bcrypt
 from flask import render_template, url_for, flash, redirect, request
-from system.forms import RegistrationForm, LoginForm, UpdateAccountForm
-from system.models import User, Post
+from system.forms import RegistrationForm, LoginForm, UpdateAccountForm, RecipeForm
+from system.models import User, Post, Recipe
 from flask_login import login_user, current_user, logout_user, login_required
-
-posts = [
-    {
-        "author": "Corey Schafer",
-        "title": "Blog Post 1",
-        "content": "First post content",
-        "date_posted": "April 20, 2018",
-    },
-    {
-        "author": "Jane Doe",
-        "title": "Blog Post 2",
-        "content": "Second post content",
-        "date_posted": "April 21, 2019",
-    },
-]
-
-sort_recipes = {
-    "Закуски": "breakfast",
-    "Салати": "salads",
-    "Супи": "soups",
-    "Основни ястия": "main_dishes",
-    "Десерти": "desserts",
-    "Напитки": "drinks",
-    "Други": "other",
-
-}
 
 
 @app.route("/")
 @app.route("/home")
 def home():  # put application's code here
-    return render_template("home.html", posts=posts)
+    recs = Recipe.query.all()
+    return render_template("home.html", posts=recs, title="Home")
 
 
 @app.route("/recipes")
@@ -129,6 +104,19 @@ def account():
     elif request.method == "GET":
         form.username.data = current_user.username
         form.email.data = current_user.email
-
     return render_template("account.html", title="Account", image_file=image_file, form=form)
+
+
+@app.route("/recipe/new", methods=["GET", "POST"])
+@login_required
+def new_recipe():
+    form = RecipeForm()
+    if form.validate_on_submit():
+        # recipe_picture = save_recipe_picture(form.picture.data)
+        recipe = Recipe(title=form.title.data, ingredients=form.ingredients.data, preparation=form.preparation.data, category="food", user_id=current_user.username)
+        db.session.add(recipe)
+        db.session.commit()
+        flash("Вашият рецпта беше създадена", "success")
+        return redirect(url_for("home"))
+    return render_template("create_recipe.html", title="New Recipe", form=form, legend="New Recipe")
 
