@@ -1,0 +1,13 @@
+{#        <table class="table table-borderless">#}
+{#            <thead>#}
+{#                <tr>#}
+{#                    <th scope="col">#}
+{#                        <img class="rounded-circle account-img" src="{{ image_file }}" alt="image"><br/>#}
+{#                    </th>#}
+{#                    <th scope="col">#}
+{#                        <h2 class="account-heading">{{ current_user.username }}</h2>#}
+{#                        <p class="text-secondary">{{ current_user.email }}</p>#}
+{#                    </th>#}
+{#                </tr>#}
+{#            </thead>#}
+{#        </table>#}
