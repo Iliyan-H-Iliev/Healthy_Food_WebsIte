@@ -1,6 +1,10 @@
 from datetime import datetime
+from typing import Set
+
 from system import db, login_manager
 from flask_login import UserMixin
+
+
 
 
 @login_manager.user_loader
@@ -36,12 +40,24 @@ class Recipe(db.Model):
     title = db.Column(db.String(50), nullable=False)
     ingredients = db.Column(db.Text, nullable=False)
     preparation = db.Column(db.Text, nullable=False)
-    category = db.Column(db.String(50), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    # date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+    picture = db.Column(db.String(20), nullable=False, default="food_image.png")
+    categories = db.Column(Set[str], nullable=False, default="Други")
 
     def __repr__(self):
         return f"Recipe('{self.title}', '{self.ingredients}', '{self.preparation}', '{self.category}')"
 
     def sort_recipes_by_category(self, category):
-        return Recipe.query.filter_by(category=category).all()
+        return Recipe.query.filter(Recipe.categories.contains(category)).all()
+
+
+    def sort_recipes_by_date(self):
+        return Recipe.query.order_by(Recipe.date_posted.desc()).all()
+
+    def sort_recipes_by_ingredient(self, ingredient):
+        return Recipe.query.filter(Recipe.ingredients.contains(ingredient)).all()
+
+
+
+
